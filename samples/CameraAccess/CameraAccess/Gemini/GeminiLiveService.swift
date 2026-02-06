@@ -163,7 +163,9 @@ class GeminiLiveService: ObservableObject {
           "automaticActivityDetection": [
             "disabled": false
           ]
-        ]
+        ],
+        "inputAudioTranscription": [:] as [String: Any],
+        "outputAudioTranscription": [:] as [String: Any]
       ]
     ]
     sendJSON(setup)
