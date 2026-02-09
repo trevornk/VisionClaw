@@ -40,8 +40,7 @@ class FastVLMService {
     }
 
     private let generateParameters = GenerateParameters(temperature: 0.0)
-    private let maxTokens = 240
-    private let displayEveryNTokens = 4
+    private let maxTokens = 80
 
     private var loadState = LoadState.idle
     private var currentTask: Task<Void, Never>?
@@ -62,7 +61,7 @@ class FastVLMService {
         case .idle:
             evaluationState = .loading
 
-            MLX.GPU.set(cacheLimit: 20 * 1024 * 1024)
+            MLX.GPU.set(cacheLimit: 256 * 1024 * 1024)
 
             // Look for the model files in the app bundle's "models" folder
             let modelConfig = FastVLM.modelConfiguration
@@ -151,20 +150,11 @@ class FastVLMService {
                         if !seenFirstToken {
                             seenFirstToken = true
                             let ttftDuration = Date().timeIntervalSince(generateStart)
-                            let text = context.tokenizer.decode(tokens: tokens)
                             Task { @MainActor in
                                 self.evaluationState = .generatingResponse
-                                self.output = text
                                 self.ttft = "\(Int(ttftDuration * 1000))ms"
                             }
                             print("[FastVLM] Frame #\(thisFrame) - TTFT: \(Int(ttftDuration * 1000))ms")
-                        }
-
-                        if tokens.count % self.displayEveryNTokens == 0 {
-                            let text = context.tokenizer.decode(tokens: tokens)
-                            Task { @MainActor in
-                                self.output = text
-                            }
                         }
 
                         if tokens.count >= self.maxTokens {
