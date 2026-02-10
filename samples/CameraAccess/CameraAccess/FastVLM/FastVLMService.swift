@@ -30,7 +30,7 @@ class FastVLMService {
 
     // MARK: - Configuration
 
-    var prompt = "List the objects you see, separated by commas. Only output object labels, nothing else."
+    var prompt = "What is the main object? Reply with only its name, max 2 words."
 
     // MARK: - Private
 
