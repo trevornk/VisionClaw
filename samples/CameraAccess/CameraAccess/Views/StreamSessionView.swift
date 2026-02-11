@@ -13,6 +13,7 @@
 
 import MWDATCore
 import SwiftUI
+import UIKit
 
 struct StreamSessionView: View {
   let wearables: WearablesInterface
@@ -42,6 +43,12 @@ struct StreamSessionView: View {
     }
     .onChange(of: viewModel.streamingMode) { newMode in
       geminiVM.streamingMode = newMode
+    }
+    .onAppear {
+      UIApplication.shared.isIdleTimerDisabled = true
+    }
+    .onDisappear {
+      UIApplication.shared.isIdleTimerDisabled = false
     }
     .alert("Error", isPresented: $viewModel.showError) {
       Button("OK") {
