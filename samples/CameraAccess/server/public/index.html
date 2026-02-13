@@ -105,9 +105,12 @@
       if (code.length !== 6) return;
 
       ws = new WebSocket(wsUrl);
+      const sock = ws;
       ws.onopen = () => {
-        ws.send(JSON.stringify({ type: 'join', room: code }));
-        setStatus('Joining...', 'waiting');
+        if (sock.readyState === WebSocket.OPEN) {
+          sock.send(JSON.stringify({ type: 'join', room: code }));
+          setStatus('Joining...', 'waiting');
+        }
       };
       ws.onmessage = (e) => handleSignaling(JSON.parse(e.data));
       ws.onclose = () => {
