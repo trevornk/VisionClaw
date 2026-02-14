@@ -80,6 +80,14 @@ struct HomeScreenView: View {
           ) {
             viewModel.connectGlasses()
           }
+
+          CustomButton(
+            title: "Start on iPhone",
+            style: .secondary,
+            isDisabled: false
+          ) {
+            viewModel.skipToIPhoneMode = true
+          }
         }
       }
       .padding(.all, 24)
