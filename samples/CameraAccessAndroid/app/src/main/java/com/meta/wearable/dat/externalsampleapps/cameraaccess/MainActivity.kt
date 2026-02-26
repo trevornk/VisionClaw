@@ -31,6 +31,9 @@ import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import android.content.Intent
+import com.meta.wearable.dat.externalsampleapps.cameraaccess.service.GlassesMediaBrowserService
+import com.meta.wearable.dat.externalsampleapps.cameraaccess.service.VoiceSessionService
 
 class MainActivity : ComponentActivity() {
   companion object {
@@ -60,6 +63,21 @@ class MainActivity : ComponentActivity() {
     }
   }
 
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    handleGlassesToggle(intent)
+  }
+
+  private fun handleGlassesToggle(intent: Intent) {
+    if (intent.action == "TOGGLE_FROM_GLASSES") {
+      android.util.Log.d("VisionClaw", "MainActivity: TOGGLE_FROM_GLASSES received")
+      val svcIntent = Intent(
+        VoiceSessionService.ACTION_TOGGLE, null, this, VoiceSessionService::class.java
+      )
+      startForegroundService(svcIntent)
+    }
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -85,6 +103,12 @@ class MainActivity : ComponentActivity() {
           onRequestWearablesPermission = ::requestWearablesPermission,
       )
     }
+
+    // Start persistent glasses bridge service
+    startForegroundService(Intent(this, GlassesMediaBrowserService::class.java))
+
+    // Handle glasses toggle if launched that way
+    handleGlassesToggle(intent)
   }
 
   fun checkPermissions(onPermissionsGranted: () -> Unit) {

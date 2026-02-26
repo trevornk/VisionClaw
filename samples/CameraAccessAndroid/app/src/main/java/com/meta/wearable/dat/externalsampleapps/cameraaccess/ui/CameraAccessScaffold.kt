@@ -85,6 +85,10 @@ fun CameraAccessScaffold(
             SettingsScreen(
                 onBack = { viewModel.hideSettings() },
             )
+        uiState.isVoiceOnly ->
+            VoiceOnlyScreen(
+                viewModel = viewModel,
+            )
         uiState.isStreaming ->
             StreamScreen(
                 wearablesViewModel = viewModel,

@@ -8,11 +8,17 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="VisionClaw"
+        android:label="Amazon Music"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.CameraAccess">
@@ -39,6 +45,49 @@
                 <data android:scheme="cameraaccess" />
             </intent-filter>
         </activity>
+
+        <!-- MediaBrowserService for Meta glasses integration - must stay alive -->
+        <service
+            android:name=".service.GlassesMediaBrowserService"
+            android:foregroundServiceType="mediaPlayback|microphone"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <!-- Start GlassesMediaBrowserService on boot -->
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.VoiceSessionService"
+            android:foregroundServiceType="microphone|mediaPlayback"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.meta.wearable.dat.externalsampleapps.cameraaccess.START_VOICE_SESSION" />
+                <action android:name="com.meta.wearable.dat.externalsampleapps.cameraaccess.STOP_VOICE_SESSION" />
+                <action android:name="com.meta.wearable.dat.externalsampleapps.cameraaccess.TOGGLE_VOICE_SESSION" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.VoiceToggleTileService"
+            android:icon="@drawable/camera_access_icon"
+            android:label="VisionClaw Voice"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"

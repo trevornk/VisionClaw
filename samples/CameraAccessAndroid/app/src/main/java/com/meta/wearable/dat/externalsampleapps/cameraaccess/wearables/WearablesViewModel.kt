@@ -158,8 +158,12 @@ class WearablesViewModel(application: Application) : AndroidViewModel(applicatio
     _uiState.update { it.copy(isStreaming = true, isPhoneMode = true) }
   }
 
+  fun navigateToVoiceOnly() {
+    _uiState.update { it.copy(isVoiceOnly = true, isStreaming = false, isPhoneMode = false) }
+  }
+
   fun navigateToDeviceSelection() {
-    _uiState.update { it.copy(isStreaming = false, isPhoneMode = false) }
+    _uiState.update { it.copy(isStreaming = false, isPhoneMode = false, isVoiceOnly = false) }
   }
 
   fun showSettings() {

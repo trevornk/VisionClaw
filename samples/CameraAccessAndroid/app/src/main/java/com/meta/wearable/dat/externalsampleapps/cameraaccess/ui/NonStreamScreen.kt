@@ -192,6 +192,12 @@ fun NonStreamScreen(
             label = "Start on Phone",
             onClick = { viewModel.navigateToPhoneMode() },
         )
+
+        // Voice Only Button (audio + OpenClaw, no camera)
+        SwitchButton(
+            label = "Voice Only",
+            onClick = { viewModel.navigateToVoiceOnly() },
+        )
       }
 
       // Getting Started Sheet

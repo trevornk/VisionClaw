@@ -19,9 +19,9 @@ android {
   buildFeatures { buildConfig = true }
 
   defaultConfig {
-    applicationId = "com.meta.wearable.dat.externalsampleapps.cameraaccess"
+    applicationId = "com.amazon.mp3"
     minSdk = 31
-    targetSdk = 34
+    targetSdk = 33
     versionCode = 1
     versionName = "1.0"
 

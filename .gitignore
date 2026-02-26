@@ -6,3 +6,7 @@ samples/CameraAccessAndroid/local.properties
 samples/CameraAccessAndroid/.gradle/
 samples/CameraAccessAndroid/build/
 samples/CameraAccessAndroid/app/build/
+amazon-music-stub/.gradle/
+amazon-music-stub/app/build/
+amazon-music-stub/build/
+amazon-music-stub/local.properties

@@ -135,6 +135,12 @@ fun HomeScreen(
             label = "Start on Phone",
             onClick = { viewModel.navigateToPhoneMode() },
         )
+
+        // Voice only mode (audio + AI, no camera)
+        SwitchButton(
+            label = "Voice Only",
+            onClick = { viewModel.navigateToVoiceOnly() },
+        )
       }
     }
   }
